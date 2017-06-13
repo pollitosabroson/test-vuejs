@@ -18,29 +18,30 @@
       <li><a href="https://github.com/vuejs/awesome-vue" target="_blank">awesome-vue</a></li>
     </ul>
     <h2>TEST</h2>
-    <div v-for="record in usuarios">
-      <div>Prueba</div>
+    <div v-for="record in usuarios" class="col-md-4 m-b-lg">
+      <div class="panel panel-default panel-profile m-b-0">
+        <div class="panel-body text-center">
+          <img class="panel-profile-img" :src="record.picture.large">
+          <h5 class="panel-title">{{ record.name.first }} {{ record.name.last }}</h5>
+          <p class="m-b">{{ record.email }}</p>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-var apiURL = 'https://randomuser.me/api/?results=25'
+var apiURL = 'https://randomuser.me/api/?results=500'
 export default {
   name: 'hello',
   data () {
     return {
       msg: 'Prueba de los templates',
-      usuarios: []
-    }
-  },
-  ready: function () {
-    this.fetchData()
-  },
-  methods: {
-    fetchData: function () {
-      this.$http.get(apiURL, function (v1users) {
-        console.log(v1users)
+      usuarios: this.$http.get(apiURL).then(response => {
+        // success callback
+        this.usuarios = response.body.results
+      }, response => {
+        // error callback
       })
     }
   }
@@ -49,6 +50,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+
 h1, h2 {
   font-weight: normal;
 }
